@@ -3,3 +3,4 @@ openai
 gunicorn
 qrcode[pil]
 python-dotenv
+werkzeug==2.2.3
