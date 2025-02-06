@@ -1,3 +1,12 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # 默认加载当前目录下的 .env 文件
+
+# 然后通过 os.environ 获取 API 密钥等敏感信息
+API_KEY = os.environ.get("API_KEY")
+BASE_URL = os.environ.get("BASE_URL")
+
 from flask import Flask, render_template, request, jsonify
 import time
 from openai import OpenAI
