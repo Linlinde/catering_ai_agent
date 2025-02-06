@@ -3,21 +3,70 @@
 <head>
     <meta charset="utf-8">
     <title>川林酒家AI点餐助手</title>
+    <!-- 确保页面在移动设备上以正确比例显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #chatbox { border: 1px solid #ccc; padding: 10px; width: 500px; height: 400px; overflow-y: scroll; }
-        .message { margin: 5px 0; }
-        .user { color: blue; }
-        .assistant { color: green; }
-        .loading { font-style: italic; color: gray; }
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f7f7f7;
+        }
+        h1 {
+            text-align: center;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            overflow-y: auto;
+            background: #fff;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        .message {
+            margin: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .user {
+            background-color: #e0f7ff;
+            color: #007acc;
+        }
+        .assistant {
+            background-color: #e8ffe8;
+            color: #006600;
+        }
+        .loading {
+            font-style: italic;
+            color: gray;
+        }
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            body {
+                margin: 10px;
+            }
+            #chatbox {
+                height: 300px;
+                margin: 10px auto;
+            }
+            input, button {
+                width: 100%;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>川林酒家AI点餐助手</h1>
     <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="请输入您的问题或点餐信息..." style="width: 400px;">
-    <button id="sendBtn">发送</button>
-
+    <div style="max-width: 500px; margin: auto;">
+        <input type="text" id="userInput" placeholder="请输入您的问题或点餐信息..." style="width:100%; padding:10px; margin-bottom:5px;">
+        <button id="sendBtn" style="width:100%; padding:10px;">发送</button>
+    </div>
     <script>
         const chatbox = document.getElementById("chatbox");
         const userInput = document.getElementById("userInput");
@@ -27,8 +76,7 @@
             let dots = 0;
             return setInterval(() => {
                 dots = (dots + 1) % 4;
-                let loadingText = "正在思考" + ".".repeat(dots);
-                element.innerText = "助手: " + loadingText;
+                element.innerText = "助手: 正在思考" + ".".repeat(dots);
             }, 500);
         }
 
