@@ -7,6 +7,7 @@ load_dotenv()  # 默认加载当前目录下的 .env 文件
 API_KEY = os.environ.get("API_KEY")
 BASE_URL = os.environ.get("BASE_URL")
 
+
 from flask import Flask, render_template, request, jsonify
 import time
 from openai import OpenAI
@@ -18,9 +19,10 @@ conversation_history = []
 
 # 使用阿里云 dashscope 兼容模式调用 qwen-plus 模型
 client = OpenAI(
-    api_key="", 
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+    api_key=API_KEY,
+    base_url=BASE_URL,
 )
+
 
 # 菜单数据库：包括传统菜品和海鲜菜品，每道菜增加了“等待时间”、“销量”和“点赞”字段
 MENU = {
