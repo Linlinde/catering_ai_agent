@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>川林酒家AI点餐助手</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #chatbox { border: 1px solid #ccc; padding: 10px; width: 500px; height: 400px; overflow-y: scroll; }
+        .message { margin: 5px 0; }
+        .user { color: blue; }
+        .assistant { color: green; }
+        .loading { font-style: italic; color: gray; }
+    </style>
+</head>
+<body>
+    <h1>川林酒家AI点餐助手</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="请输入您的问题或点餐信息..." style="width: 400px;">
+    <button id="sendBtn">发送</button>
+
+    <script>
+        const chatbox = document.getElementById("chatbox");
+        const userInput = document.getElementById("userInput");
+        const sendBtn = document.getElementById("sendBtn");
+
+        function startLoadingAnimation(element) {
+            let dots = 0;
+            return setInterval(() => {
+                dots = (dots + 1) % 4;
+                let loadingText = "正在思考" + ".".repeat(dots);
+                element.innerText = "助手: " + loadingText;
+            }, 500);
+        }
+
+        function appendMessage(sender, message) {
+            const div = document.createElement("div");
+            div.className = "message " + sender;
+            div.innerText = sender === "user" ? "用户: " + message : "助手: " + message;
+            chatbox.appendChild(div);
+            chatbox.scrollTop = chatbox.scrollHeight;
+            return div;
+        }
+
+        sendBtn.addEventListener("click", () => {
+            const message = userInput.value.trim();
+            if (!message) return;
+            appendMessage("user", message);
+            const loadingMsg = appendMessage("assistant", "正在思考");
+            loadingMsg.classList.add("loading");
+            const loadingInterval = startLoadingAnimation(loadingMsg);
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(loadingInterval);
+                loadingMsg.classList.remove("loading");
+                loadingMsg.innerText = "助手: " + data.response;
+            })
+            .catch(error => {
+                clearInterval(loadingInterval);
+                console.error("Error:", error);
+                loadingMsg.classList.remove("loading");
+                loadingMsg.innerText = "助手: 网络错误，请重试。";
+            });
+            userInput.value = "";
+        });
+
+        userInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                sendBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
