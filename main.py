@@ -9,7 +9,7 @@ conversation_history = []
 
 # 使用阿里云 dashscope 兼容模式调用 qwen-plus 模型
 client = OpenAI(
-    api_key="sk-48de5d863b234ced9a3e2a61d2deac3d", 
+    api_key="", 
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
 )
 
